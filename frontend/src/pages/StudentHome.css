@@ -1,0 +1,28 @@
+.property-card {
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.2s ease;
+}
+.property-card:hover {
+  transform: scale(1.01);
+}
+
+.property-image {
+  width: 250px;
+  height: 100%;
+  object-fit: cover;
+}
+
+.image-container {
+  min-width: 250px;
+  max-height: 220px;
+  overflow: hidden;
+  position: relative;
+}
+
+.avatar {
+  font-weight: bold;
+  font-family: 'Segoe UI', sans-serif;
+  text-transform: uppercase;
+  background: linear-gradient(45deg, #6c63ff, #ab47bc);
+}

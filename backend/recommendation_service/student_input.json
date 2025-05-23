@@ -1,0 +1,5 @@
+{
+  "max_rent": "11000",
+  "preferred_room_type": "2 Sharing",
+  "amenities": ["wifi", "meals", "attached bath", "laundry", "ac"]
+}

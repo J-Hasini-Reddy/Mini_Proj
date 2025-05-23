@@ -1,0 +1,14 @@
+
+#whychoose h2,
+#testimonials h2 {
+  border-bottom: 3px solid #0d6efd;
+  display: inline-block;
+}
+
+.carousel .card {
+  border-radius: 20px;
+}
+
+.carousel img.rounded-circle {
+  border: 3px solid #0d6efd;
+}
