@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./register.css";
 import ownerIllustration from "./Owner.png";
 import axios from "axios";
 
 function OwnerRegister() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -40,6 +42,23 @@ function OwnerRegister() {
             className="profile-icon"
           />
           <h2 className="welcome-title">Create an Account</h2>
+
+        <div className="d-flex justify-content-center mb-3">
+            <button
+              className="btn btn-primary me-2"
+              onClick={() => navigate("/owner/register")}
+              disabled
+            >
+              Property Owner
+            </button>
+            <button
+              className="btn btn-outline-primary"
+              onClick={() => navigate("/student/register")}
+            >
+              Student
+            </button>
+          </div>
+
           <form onSubmit={handleSubmit}>
             <input type="text" placeholder="Username" className="form-input" onChange={handleChange} />
             <input type="password" placeholder="Password" className="form-input" onChange={handleChange} />
@@ -50,7 +69,7 @@ function OwnerRegister() {
           <p className="login-text">{message}</p>
           <p className="login-text">
             Already have an account?{" "}
-            <a href="/owner-login" className="login-link">
+            <a href="/owner/login" className="login-link">
               <u>Login here</u>
             </a>
           </p>

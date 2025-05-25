@@ -1,13 +1,27 @@
 import React from 'react';
-import { FaWifi, FaSnowflake, FaUtensils, FaShower, FaSoap } from 'react-icons/fa';
+import {
+  FaWifi,
+  FaSnowflake,
+  FaUtensils,
+  FaShower,
+  FaSoap,
+  FaShieldAlt,
+  FaParking,
+  FaBath,
+  FaArrowUp
+} from 'react-icons/fa';
 import './AmenitiesSelector.css';
 
 const icons = {
   WiFi: <FaWifi />,
   AC: <FaSnowflake />,
   Meals: <FaUtensils />,
-  'Attached Bathroom': <FaShower />,
-  Laundry: <FaSoap />
+  Laundry: <FaSoap />,
+  'Attached Bathroom': <FaBath />,
+  Heater: <FaShower />,
+  Security: <FaShieldAlt />,
+  Parking: <FaParking />,
+  Elevator: <FaArrowUp />
 };
 
 const AmenitiesSelector = ({ selected, onToggle }) => {

@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Form, Button, Row, Col, Badge, Navbar, Nav, InputGroup } from 'react-bootstrap';
 import { FaBell, FaUserCircle, FaHeart, FaComments } from 'react-icons/fa';
 import './StudentHome.css';
+import axios from 'axios';
 
 const StudentProfile = () => {
   const [formData, setFormData] = useState({
@@ -12,7 +13,28 @@ const StudentProfile = () => {
   });
 
   const hobbiesList = ['Music', 'Sports', 'Reading', 'Gaming', 'Traveling', 'Cooking'];
-  const amenitiesList = ['WiFi', 'AC', 'Meals', 'Laundry', 'Attached Bathroom'];
+  const amenitiesList = ['WiFi', 'AC', 'Meals', 'Laundry', 'Attached Bathroom', 'Heater', 'Security', 'Parking', 'Elevator' ];
+
+   useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const token = localStorage.getItem("studentToken");
+        if (!token) return;
+
+        const response = await axios.get("http://localhost:5000/api/student/profile/", {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+
+        if (response.data) {
+          setFormData(prev => ({ ...prev, ...response.data }));
+        }
+      } catch (err) {
+        console.error("Failed to fetch profile:", err);
+      }
+    };
+
+    fetchProfile();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,10 +51,28 @@ const StudentProfile = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
+    try {
+      const token = localStorage.getItem("studentToken");
+      if (!token) {
+        alert("You must be logged in to submit your profile.");
+        return;
+      }
+
+      const response = await axios.post(
+        "http://localhost:5000/api/student/profile",
+        formData,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      alert("Profile saved successfully!");
+    } catch (error) {
+      console.error("Error saving profile:", error);
+      alert("Failed to save profile.");
+    }
   };
+
 
   return (
     <div className="student-profile">

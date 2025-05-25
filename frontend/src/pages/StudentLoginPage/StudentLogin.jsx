@@ -16,14 +16,22 @@ function StudentLogin() {
     e.preventDefault();
     try {
       const res = await axios.post("http://localhost:5000/api/student/login", credentials);
-      localStorage.setItem("studentToken", res.data.token); 
+
+      const { token, student } = res.data;
+
+      // ✅ Save token and user info
+      localStorage.setItem("studentToken", token);
+      localStorage.setItem("studentInfo", JSON.stringify(student));
+
+      // ✅ Set default Authorization header for future axios requests
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
       alert("Login successful!");
-      console.log(res.data);
-      navigate("/student/home"); // Redirect after successful login
+      navigate("/student/home");
     } catch (err) {
-      alert("Login failed.");
-      console.error(err);
-      }
+      alert(err.response?.data?.error || "Login failed.");
+      console.error("Login error:", err);
+    }
   };
 
   return (
@@ -33,17 +41,61 @@ function StudentLogin() {
       </div>
       <div className="login-right">
         <div className="login-card">
-          <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="avatar" className="profile-icon" />
+          <img
+            src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+            alt="avatar"
+            className="profile-icon"
+          />
           <h2 className="welcome-title">Welcome back</h2>
+
+          <div className="d-flex justify-content-center mb-3">
+            <button
+              className="btn btn-primary me-2"
+              onClick={() => navigate("/student/login")}
+              disabled
+            >
+              Student
+            </button>
+            <button
+              className="btn btn-outline-primary"
+              onClick={() => navigate("/owner/login")}
+            >
+              Property Owner
+            </button>
+          </div>
+
           <form onSubmit={handleLogin}>
-            <input name="username" type="text" placeholder="Username" className="form-input" onChange={handleChange} required />
-            <input name="password" type="password" placeholder="Password" className="form-input" onChange={handleChange} required />
+            <input
+              name="username"
+              type="text"
+              placeholder="Username"
+              className="form-input"
+              onChange={handleChange}
+              required
+            />
+            <input
+              name="password"
+              type="password"
+              placeholder="Password"
+              className="form-input"
+              onChange={handleChange}
+              required
+            />
             <button type="submit" className="login-button">Login</button>
           </form>
+
           <p className="signup-text">
-            Don’t have an account? <a href="/register" className="signup-link"><u>Sign up here</u></a>
+            Don’t have an account?{" "}
+            <span
+              className="signup-link"
+              onClick={() => navigate("/student/register")}
+              style={{ cursor: "pointer", textDecoration: "underline", color: "#007bff" }}
+            >
+              Sign up here
+            </span>
           </p>
-          <div className="social-icons">
+
+          <div className="social-icons mt-3">
             <i className="fab fa-facebook-f"></i>
             <i className="fab fa-google"></i>
             <i className="fab fa-twitter"></i>

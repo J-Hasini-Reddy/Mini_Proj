@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./GradStayTheme.css";
 import studentIllustration from "./Student.png";
 
 function StudentRegister() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -36,6 +38,23 @@ function StudentRegister() {
         <div className="register-card">
           <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="avatar" className="profile-icon" />
           <h2 className="welcome-title">Create an Account</h2>
+
+        <div className="d-flex justify-content-center mb-3">
+            <button
+              className="btn btn-primary me-2"
+              onClick={() => navigate("/student/register")}
+              disabled
+            >
+              Student
+            </button>
+            <button
+              className="btn btn-outline-primary"
+              onClick={() => navigate("/owner/register")}
+            >
+              Property Owner
+            </button>
+          </div>
+
           <form onSubmit={handleSubmit}>
             <input type="text" name="username" placeholder="Username" className="form-input" onChange={handleChange} />
             <input type="password" name="password" placeholder="Password" className="form-input" onChange={handleChange} />
@@ -51,7 +70,7 @@ function StudentRegister() {
           </form>
           {message && <p style={{ color: "red" }}>{message}</p>}
           <p className="login-text">
-            Already have an account? <a href="/student-login" className="login-link"><u>Login here</u></a>
+            Already have an account? <a href="/student/login" className="login-link"><u>Login here</u></a>
           </p>
         </div>
       </div>

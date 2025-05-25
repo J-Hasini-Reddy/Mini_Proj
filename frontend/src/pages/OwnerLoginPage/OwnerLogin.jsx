@@ -13,8 +13,9 @@ function OwnerLogin() {
   const [message, setMessage] = useState("");
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.placeholder.toLowerCase()]: e.target.value });
+  setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -41,15 +42,33 @@ function OwnerLogin() {
             className="profile-icon"
           />
           <h2 className="welcome-title">Welcome back</h2>
+
+        <div className="d-flex justify-content-center mb-3">
+            <button
+              className="btn btn-primary me-2"
+              onClick={() => navigate("/owner/login")}
+              disabled
+            >
+              Property Owner
+            </button>
+            <button
+              className="btn btn-outline-primary"
+              onClick={() => navigate("/student/login")}
+            >
+              Student
+            </button>
+          </div>
+
           <form onSubmit={handleSubmit}>
-            <input type="text" placeholder="Username" className="form-input" onChange={handleChange} />
-            <input type="password" placeholder="Password" className="form-input" onChange={handleChange} />
+            <input type="text" name="username" placeholder="Username" className="form-input" onChange={handleChange} />
+            <input type="password" name="password" placeholder="Password" className="form-input" onChange={handleChange} />
+
             <button type="submit" className="login-button">Login</button>
           </form>
           <p className="signup-text">{message}</p>
           <p className="signup-text">
             Don’t have an account?{" "}
-            <a href="/owner-register" className="signup-link">
+            <a href="/owner/register" className="signup-link">
               <u>Sign up here</u>
             </a>
           </p>

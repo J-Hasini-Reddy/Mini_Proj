@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Container, Navbar, Nav, Dropdown, Button, Row, Col, Card } from 'react-bootstrap';
 import { FaBell, FaUserCircle, FaClipboardList, FaChartBar, FaPlusCircle } from 'react-icons/fa';
 import './StudentHome.css'; // for shared styles
@@ -19,6 +20,16 @@ const mockListings = [
 ];
 
 const OwnerDashboard = () => {
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem('ownerToken');
+    if (!token) {
+      navigate('/owner/login'); 
+    }
+  }, [navigate]);
+
   return (
     <div className="owner-dashboard">
       {/* ✅ Navbar */}

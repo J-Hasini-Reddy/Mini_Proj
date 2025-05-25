@@ -17,8 +17,16 @@ app.use(express.json());
 const studentAuthRoutes = require("./routes/studentAuth");
 app.use("/api/student", studentAuthRoutes);
 
+const ownerListingsRoutes = require('./routes/ownerListings');
+app.use('/api/owner', ownerListingsRoutes);
+
 const ownerAuthRoutes = require("./routes/ownerAuth");
 app.use("/api/owner", ownerAuthRoutes);
+
+const studentProfileRoutes = require('./routes/studentProfile');
+app.use('/api/student/profile', studentProfileRoutes);
+
+
 
 
 // Test route

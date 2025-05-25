@@ -1,22 +1,26 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
 const LocationPicker = ({ location, setLocation }) => {
   useMapEvents({
     click(e) {
-      setLocation([e.latlng.lat, e.latlng.lng]);
+      const coords = [e.latlng.lat, e.latlng.lng];
+      console.log("Selected location:", coords);  // ✅ Add this
+      setLocation(coords);
     }
   });
 
   return location ? <Marker position={location} /> : null;
 };
 
+
 const LocationMapInput = ({ location, setLocation }) => {
   return (
     <div>
       <p>Click on the map to select your property location:</p>
-      <MapContainer center={[20.5937, 78.9629]} zoom={5} style={{ height: '300px' }}>
+      <MapContainer center={[17.385044, 78.486671]} zoom={10} style={{ height: '300px', width: '100%' }}>
+
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />

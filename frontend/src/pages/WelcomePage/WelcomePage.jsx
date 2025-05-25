@@ -1,4 +1,5 @@
 import "bootstrap/dist/css/bootstrap.min.css";
+import { useNavigate } from "react-router-dom";
 import "./WelcomePage.css";
 import houseImage from './house.jpg';
 import aiRecImage from './ai rec.png';
@@ -9,6 +10,8 @@ import micImage from './mic.jpg';
 import emmaImage from './emma.png';
 
 function WelcomePage() {
+  const navigate = useNavigate();
+
   return (
     <div>
       {/* Navbar */}
@@ -20,32 +23,29 @@ function WelcomePage() {
           <div className="mx-auto">
             <ul className="navbar-nav flex-row">
               <li className="nav-item px-3">
-                <a className="nav-link fw-bold" href="#home">
-                  Home
-                </a>
+                <a className="nav-link fw-bold" href="#home">Home</a>
               </li>
               <li className="nav-item px-3">
-                <a className="nav-link fw-bold" href="#whychoose">
-                  Why Choose Us
-                </a>
+                <a className="nav-link fw-bold" href="#whychoose">Why Choose Us</a>
               </li>
               <li className="nav-item px-3">
-                <a className="nav-link fw-bold" href="#testimonials">
-                  Testimonials
-                </a>
+                <a className="nav-link fw-bold" href="#testimonials">Testimonials</a>
               </li>
               <li className="nav-item px-3">
-                <button className="btn btn-outline-primary me-2">Login</button>
+                <button className="btn btn-outline-primary me-2" onClick={() => navigate("/student/login")}>
+                  Login
+                </button>
               </li>
               <li className="nav-item">
-                <button className="btn btn-primary">Register</button>
+                <button className="btn btn-primary" onClick={() => navigate("/student/register")}>
+                  Register
+                </button>
               </li>
             </ul>
           </div>
         </div>
       </nav>
 
-      {/* Hero Section */}
       {/* Hero Section */}
       <section
         id="home"
@@ -66,16 +66,21 @@ function WelcomePage() {
                 className="form-control mb-3"
                 placeholder="Search by city, university or place"
               />
-              <button className="btn btn-light">Find Rooms</button>
+              <button className="btn btn-light" onClick={() => navigate("/student/register")}>
+                Find Rooms
+              </button>
             </div>
             <div className="col-md-6 text-end">
               <h2>List your property. Find tenants fast.</h2>
               <p>Join thousands of property owners who trust StaySmart.</p>
-              <button className="btn btn-light">Post a Property</button>
+              <button className="btn btn-light" onClick={() => navigate("/owner/register")}>
+                Post a Property
+              </button>
             </div>
           </div>
         </div>
       </section>
+
 
       {/* Why Choose Us */}
       <section id="whychoose" className="py-5 bg-white">
