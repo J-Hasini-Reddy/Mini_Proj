@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./register.css";
+import "../../styles/iconStyles.css";
 import ownerIllustration from "./Owner.png";
 import axios from "axios";
+import userIcon from "../../styles/user_icon.png";
 
 function OwnerRegister() {
   const navigate = useNavigate();
@@ -37,7 +39,7 @@ function OwnerRegister() {
       <div className="register-right">
         <div className="register-card">
           <img
-            src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+            src={userIcon}
             alt="avatar"
             className="profile-icon"
           />

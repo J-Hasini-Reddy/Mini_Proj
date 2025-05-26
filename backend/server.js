@@ -26,6 +26,8 @@ app.use("/api/owner", ownerAuthRoutes);
 const studentProfileRoutes = require('./routes/studentProfile');
 app.use('/api/student/profile', studentProfileRoutes);
 
+const recommendRoute = require('./routes/recommend');
+app.use('/api/recommend', recommendRoute);
 
 
 

@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import "./Owner.css";
+import "../../styles/iconStyles.css";
 import ownerIllustration from "./Owner.png";
 import axios from "axios";
+import userIcon from "../../styles/user_icon.png";
 import { useNavigate } from "react-router-dom";
 
 
@@ -37,7 +39,7 @@ function OwnerLogin() {
       <div className="login-right">
         <div className="login-card">
           <img
-            src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+            src={userIcon}
             alt="avatar"
             className="profile-icon"
           />

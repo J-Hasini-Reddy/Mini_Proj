@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./GradStayTheme.css";
+import "../../styles/iconStyles.css";
 import studentIllustration from "./Student.png";
+import userIcon from "../../styles/user_icon.png";
 
 function StudentRegister() {
   const navigate = useNavigate();
@@ -36,10 +38,10 @@ function StudentRegister() {
       </div>
       <div className="register-right">
         <div className="register-card">
-          <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="avatar" className="profile-icon" />
+          <img src={userIcon} alt="avatar" className="profile-icon" />
           <h2 className="welcome-title">Create an Account</h2>
 
-        <div className="d-flex justify-content-center mb-3">
+          <div className="d-flex justify-content-center mb-3">
             <button
               className="btn btn-primary me-2"
               onClick={() => navigate("/student/register")}

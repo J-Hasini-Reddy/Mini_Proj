@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./student.css";
+import "../../styles/iconStyles.css";
 import studentIllustration from "./Student.png";
+import userIcon from "../../styles/user_icon.png";
 
 function StudentLogin() {
   const navigate = useNavigate();
@@ -42,7 +44,7 @@ function StudentLogin() {
       <div className="login-right">
         <div className="login-card">
           <img
-            src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+            src={userIcon}
             alt="avatar"
             className="profile-icon"
           />

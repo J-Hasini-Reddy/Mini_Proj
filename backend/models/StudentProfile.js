@@ -21,7 +21,13 @@ const StudentProfileSchema = new mongoose.Schema({
   substanceUse: String,
   guests: String,
   roomType: String,
+  sharingType: {
+  type: String,
+  enum: ['Private', '2 Sharing', '3+ Sharing'],
+  default: 'Private'
+},
   maxRent: String,
+  maxDistance: String,
   amenities: [String],
 }, { timestamps: true });
 

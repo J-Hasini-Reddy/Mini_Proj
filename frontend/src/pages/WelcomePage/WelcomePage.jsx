@@ -1,51 +1,22 @@
 import "bootstrap/dist/css/bootstrap.min.css";
+import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import "./WelcomePage.css";
-import houseImage from './house.jpg';
+import SearchBar from "../../components/SearchBar";
+import houseImage from './Welcome.png';
 import aiRecImage from './ai rec.png';
 import realChatImage from './real.png';
 import rentImage from './rent.png';
 import saraImage from './sara.jpg';
 import micImage from './mic.jpg';
 import emmaImage from './emma.png';
+import logo from './logo.png';
 
 function WelcomePage() {
   const navigate = useNavigate();
 
   return (
     <div>
-      {/* Navbar */}
-      <nav className="navbar navbar-expand-lg navbar-light bg-light shadow fixed-top">
-        <div className="container">
-          <a className="navbar-brand fw-bold text-primary" href="#home">
-            StaySmart
-          </a>
-          <div className="mx-auto">
-            <ul className="navbar-nav flex-row">
-              <li className="nav-item px-3">
-                <a className="nav-link fw-bold" href="#home">Home</a>
-              </li>
-              <li className="nav-item px-3">
-                <a className="nav-link fw-bold" href="#whychoose">Why Choose Us</a>
-              </li>
-              <li className="nav-item px-3">
-                <a className="nav-link fw-bold" href="#testimonials">Testimonials</a>
-              </li>
-              <li className="nav-item px-3">
-                <button className="btn btn-outline-primary me-2" onClick={() => navigate("/student/login")}>
-                  Login
-                </button>
-              </li>
-              <li className="nav-item">
-                <button className="btn btn-primary" onClick={() => navigate("/student/register")}>
-                  Register
-                </button>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-
       {/* Hero Section */}
       <section
         id="home"
@@ -54,25 +25,66 @@ function WelcomePage() {
           backgroundImage: `url(${houseImage})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
-          paddingTop: "70px",
+          paddingTop: "0",
+          height: "100vh"
         }}
       >
-        <div className="container">
+        {/* Navbar */}
+        <nav className="navbar navbar-expand-lg navbar-light bg-transparent fixed-top">
+          <div className="container">
+            <a className="navbar-brand fw-bold" href="#home">
+              <img src={logo} alt="Logo" height="80" className="me-2" />
+            </a>
+            <button
+              className="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarNav"
+              aria-controls="navbarNav"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span className="navbar-toggler-icon"></span>
+            </button>
+            <div className="collapse navbar-collapse" id="navbarNav">
+              <ul className="navbar-nav ms-auto">
+                <li className="nav-item px-3">
+                  <a className="nav-link fw-bold" href="#home">Home</a>
+                </li>
+                <li className="nav-item px-3">
+                  <a className="nav-link fw-bold" href="#whychoose">Why Choose Us</a>
+                </li>
+                <li className="nav-item px-3">
+                  <a className="nav-link fw-bold" href="#testimonials">Testimonials</a>
+                </li>
+                <li className="nav-item px-3">
+                  <button className="btn btn-outline-primary me-2" onClick={() => navigate("/student/login")}>
+                    Login
+                  </button>
+                </li>
+                <li className="nav-item">
+                  <button className="btn btn-primary" onClick={() => navigate("/student/register")}>
+                    Register
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+
+        <div className="container mt-5 pt-5">
           <div className="row text-white">
             <div className="col-md-6">
               <h2>Search, explore and book your room!</h2>
-              <input
-                type="text"
-                className="form-control mb-3"
-                placeholder="Search by city, university or place"
-              />
+              <div className="col-md-6">
+                 <SearchBar />
+              </div>
               <button className="btn btn-light" onClick={() => navigate("/student/register")}>
                 Find Rooms
               </button>
             </div>
             <div className="col-md-6 text-end">
               <h2>List your property. Find tenants fast.</h2>
-              <p>Join thousands of property owners who trust StaySmart.</p>
               <button className="btn btn-light" onClick={() => navigate("/owner/register")}>
                 Post a Property
               </button>
@@ -81,21 +93,16 @@ function WelcomePage() {
         </div>
       </section>
 
-
       {/* Why Choose Us */}
       <section id="whychoose" className="py-5 bg-white">
         <div className="container text-center">
-          <h2 className="text-primary border-bottom pb-2 d-inline-block">
+          <h2 className="text-black border-bottom pb-2 d-inline-block">
             Why Choose Us?
           </h2>
           <div className="row mt-5">
             <div className="col-md-4 mb-4">
               <div className="card h-100 shadow">
-                <img
-                  src={aiRecImage}
-                  className="card-img-top p-4"
-                  alt="recommendations"
-                />
+                <img src={aiRecImage} className="card-img-top p-4" alt="Smart Recommendations" />
                 <div className="card-body">
                   <h5 className="card-title">Smart Recommendations</h5>
                   <p className="card-text">
@@ -106,7 +113,7 @@ function WelcomePage() {
             </div>
             <div className="col-md-4 mb-4">
               <div className="card h-100 shadow">
-                <img src={realChatImage} className="card-img-top p-4" alt="chat" />
+                <img src={realChatImage} className="card-img-top p-4" alt="Real-time Chat" />
                 <div className="card-body">
                   <h5 className="card-title">Real-time Chat Support</h5>
                   <p className="card-text">
@@ -117,11 +124,7 @@ function WelcomePage() {
             </div>
             <div className="col-md-4 mb-4">
               <div className="card h-100 shadow">
-                <img
-                  src={rentImage}
-                  className="card-img-top p-4"
-                  alt="pricing"
-                />
+                <img src={rentImage} className="card-img-top p-4" alt="Smart Pricing" />
                 <div className="card-body">
                   <h5 className="card-title">Smart Rent Pricing</h5>
                   <p className="card-text">
@@ -133,26 +136,20 @@ function WelcomePage() {
           </div>
         </div>
       </section>
+
+      {/* Testimonials */}
       <section id="testimonials" className="py-5 bg-light">
         <div className="container text-center">
-          <h2 className="mb-5 text-primary border-bottom d-inline-block pb-2">
+          <h2 className="mb-5 text-black border-bottom d-inline-block pb-2">
             What Our Users Say
           </h2>
           <div className="row justify-content-center">
             {/* Testimonial 1 */}
             <div className="col-md-4 mb-4">
               <div className="card h-100 p-4 shadow text-center">
-                <img
-                  src={saraImage}
-                  className="rounded-circle mx-auto mb-3"
-                  alt="Sarah"
-                  width="80"
-                  height="80"
-                  style={{ objectFit: "cover" }}
-                />
+                <img src={saraImage} className="rounded-circle mx-auto mb-3" alt="Sarah" width="80" height="80" />
                 <p className="mb-2">
-                  "StaySmart made finding my perfect student accommodation so
-                  easy!"
+                  "Nivas made finding my perfect student accommodation so easy!"
                 </p>
                 <strong>- Sarah, NYU</strong>
               </div>
@@ -161,17 +158,9 @@ function WelcomePage() {
             {/* Testimonial 2 */}
             <div className="col-md-4 mb-4">
               <div className="card h-100 p-4 shadow text-center">
-                <img
-                  src={micImage}
-                  className="rounded-circle mx-auto mb-3"
-                  alt="Michael"
-                  width="80"
-                  height="80"
-                  style={{ objectFit: "cover" }}
-                />
+                <img src={micImage} className="rounded-circle mx-auto mb-3" alt="Michael" width="80" height="80" />
                 <p className="mb-2">
-                  "As a property owner, I love how efficiently I can connect
-                  with reliable tenants."
+                  "As a property owner, I love how efficiently I can connect with reliable tenants."
                 </p>
                 <strong>- Michael</strong>
               </div>
@@ -180,17 +169,9 @@ function WelcomePage() {
             {/* Testimonial 3 */}
             <div className="col-md-4 mb-4">
               <div className="card h-100 p-4 shadow text-center">
-                <img
-                  src={emmaImage}
-                  className="rounded-circle mx-auto mb-3"
-                  alt="Emma"
-                  width="80"
-                  height="80"
-                  style={{ objectFit: "cover" }}
-                />
+                <img src={emmaImage} className="rounded-circle mx-auto mb-3" alt="Emma" width="80" height="80" />
                 <p className="mb-2">
-                  "The real-time chat feature made communication seamless and
-                  stress-free."
+                  "The real-time chat feature made communication seamless and stress-free."
                 </p>
                 <strong>- Emma, UCL</strong>
               </div>
@@ -204,11 +185,11 @@ function WelcomePage() {
         <div className="container text-center">
           <h4>About Us</h4>
           <p>
-            StaySmart is a student accommodation platform that simplifies
+            Nivas is a student accommodation platform that simplifies
             housing for students and property owners using AI-powered tools.
           </p>
           <p className="mt-3 mb-0">
-            &copy; 2025 StaySmart. All rights reserved.
+            &copy; 2025 Nivas. All Rights Reserved.
           </p>
         </div>
       </footer>

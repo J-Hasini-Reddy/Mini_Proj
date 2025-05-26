@@ -1,0 +1,40 @@
+/* Navbar styles with high specificity */
+.navbar-light .nav-link .fa-heart,
+.navbar-light .nav-link .fa-user-circle,
+.navbar-light .nav-link .fa-comments,
+.navbar-light .nav-link .fa-bell {
+  color: #000 !important;
+  transition: none !important;
+}
+
+.navbar-light .nav-link:hover .fa-heart,
+.navbar-light .nav-link:hover .fa-user-circle,
+.navbar-light .nav-link:hover .fa-comments,
+.navbar-light .nav-link:hover .fa-bell {
+  color: #000 !important;
+}
+
+/* Direct icon styles */
+.navbar-light .fa-heart,
+.navbar-light .fa-user-circle,
+.navbar-light .fa-comments,
+.navbar-light .fa-bell {
+  color: #000 !important;
+  transition: none !important;
+}
+
+/* Override Bootstrap's default icon colors */
+.navbar-light .nav-link .fa-heart,
+.navbar-light .nav-link .fa-user-circle,
+.navbar-light .nav-link .fa-comments,
+.navbar-light .nav-link .fa-bell {
+  color: #000 !important;
+}
+
+/* Override Bootstrap's hover states */
+.navbar-light .nav-link:hover .fa-heart,
+.navbar-light .nav-link:hover .fa-user-circle,
+.navbar-light .nav-link:hover .fa-comments,
+.navbar-light .nav-link:hover .fa-bell {
+  color: #000 !important;
+}

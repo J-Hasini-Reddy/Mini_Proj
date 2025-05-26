@@ -16,6 +16,7 @@ import AdminLogin from './pages/admin/AdminLogin';
 import AdminLayout from './components/admin/AdminLayout';
 import Dashboard from './pages/admin/Dashboard';
 import UsersPage from './pages/admin/Users';
+import StudentRecommendations from './pages/StudentRecommendations';
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
@@ -42,6 +43,11 @@ function App() {
           </ProtectedRoute>
         } />
         <Route path="/profile" element={<StudentProfile />} />
+        <Route path="/student/recommendations" element={
+          <ProtectedRoute role="student">
+            <StudentRecommendations />
+          </ProtectedRoute>
+        } />
         <Route path="/owner/home" element={
           <ProtectedRoute tokenKey="ownerToken">
           <OwnerDashboard />

@@ -3,38 +3,83 @@ import { Container, Form, Button, Row, Col, Badge, Navbar, Nav, InputGroup } fro
 import { FaBell, FaUserCircle, FaHeart, FaComments } from 'react-icons/fa';
 import './StudentHome.css';
 import axios from 'axios';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const StudentProfile = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [formData, setFormData] = useState({
     fullName: '', age: '', gender: '', course: '', university: '', email: '', bio: '',
     personality: '', hobbies: [], entertainment: '', dreamLifestyle: '', roommateExpectations: '',
     cleanliness: '', sleepSchedule: '', noise: '', food: '', substanceUse: '', guests: '',
-    roomType: '', maxRent: '', amenities: []
+    roomType: '',sharingType: '', maxRent: '',maxDistance: '', amenities: []
   });
 
   const hobbiesList = ['Music', 'Sports', 'Reading', 'Gaming', 'Traveling', 'Cooking'];
   const amenitiesList = ['WiFi', 'AC', 'Meals', 'Laundry', 'Attached Bathroom', 'Heater', 'Security', 'Parking', 'Elevator' ];
 
-   useEffect(() => {
+  const [recommendedListings, setRecommendedListings] = useState([]);
+  const token = localStorage.getItem('token');
+
+  useEffect(() => {
     const fetchProfile = async () => {
       try {
         const token = localStorage.getItem("studentToken");
-        if (!token) return;
-
-        const response = await axios.get("http://localhost:5000/api/student/profile/", {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-
-        if (response.data) {
-          setFormData(prev => ({ ...prev, ...response.data }));
+        if (!token) {
+          console.warn("No token found — redirecting to login");
+          window.location.href = '/student/login';
+          return;
         }
-      } catch (err) {
-        console.error("Failed to fetch profile:", err);
+
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        };
+
+        // First fetch profile
+        const profileResponse = await axios.get(
+          "http://localhost:5000/api/student/profile",
+          config
+        );
+
+        if (profileResponse.data) {
+          setFormData(prev => ({ ...prev, ...profileResponse.data }));
+
+          // Then fetch recommendations
+          try {
+            const recommendResponse = await axios.post(
+              "http://localhost:5000/api/recommend",
+              profileResponse.data,
+              config
+            );
+
+            if (recommendResponse.data) {
+              console.log("Top 3 recommended listings:", recommendResponse.data);
+              setRecommendedListings(recommendResponse.data);
+            }
+          } catch (recommendError) {
+            console.error("Recommendation API error:", recommendError);
+            // Don't show error to user if profile was loaded successfully
+          }
+        }
+      } catch (error) {
+        console.error("API Error:", error);
+        if (error.response?.status === 401) {
+          // Clear token and redirect to login if unauthorized
+          localStorage.removeItem("studentToken");
+          window.location.href = '/student/login';
+        } else {
+          // Handle other errors
+          alert("Failed to load profile. Please try again.");
+        }
       }
     };
 
     fetchProfile();
   }, []);
+
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -55,21 +100,66 @@ const StudentProfile = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem("studentToken");
+      console.log('Token:', token);
       if (!token) {
         alert("You must be logged in to submit your profile.");
         return;
       }
 
+      // Add loading state
+      setFormData(prev => ({ ...prev, isLoading: true }));
+      console.log('Form data being sent:', formData);
+
       const response = await axios.post(
         "http://localhost:5000/api/student/profile",
         formData,
-        { headers: { Authorization: `Bearer ${token}` } }
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
       );
 
-      alert("Profile saved successfully!");
+      // Remove loading state
+      setFormData(prev => ({ ...prev, isLoading: false }));
+      console.log('API Response:', response);
+      console.log('Response data:', response.data);
+      console.log('Response status:', response.status);
+
+      if (response.status === 200 && response.data && response.data.message === 'Profile saved') {
+        console.log('Success case triggered');
+        // Success message before redirect
+        alert("Profile saved successfully! Redirecting to recommendations...");
+        // Redirect to StudentHome with scroll behavior
+        navigate('/student/home', { 
+          replace: true,
+          state: { scrollToJustForYou: true }
+        });
+      } else if (response.data && response.data.message) {
+        console.error('Error case triggered:', response.data.message);
+        alert(`Failed to save profile: ${response.data.message}`);
+      } else {
+        console.error('Unknown error case');
+        alert("Failed to save profile. Please try again.");
+      }
     } catch (error) {
       console.error("Error saving profile:", error);
-      alert("Failed to save profile.");
+      console.error('Error details:', {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status
+      });
+      
+      if (error.response) {
+        console.error('Response data:', error.response.data);
+        if (error.response.data && error.response.data.message) {
+          alert(`Error: ${error.response.data.message}`);
+        } else {
+          alert(`Error: ${error.response.status} - ${error.response.statusText}`);
+        }
+      } else if (error.message) {
+        alert(`Error: ${error.message}`);
+      } else {
+        alert("An unexpected error occurred. Please try again.");
+      }
     }
   };
 
@@ -218,8 +308,27 @@ const StudentProfile = () => {
                 <option>Shared</option>
                 <option>Studio</option>
               </Form.Select></Col>
+              <Col md={6}><Form.Select name="sharingType" value={formData.sharingType} onChange={handleChange}>
+              <option value="">Sharing Type</option>
+              <option>Private</option>
+              <option>2 Sharing</option>
+              <option>3+ Sharing</option>
+            </Form.Select></Col></Row>
+            <Row className="mb-3">
               <Col md={6}><Form.Control name="maxRent" placeholder="Max Rent ₹" value={formData.maxRent} onChange={handleChange} /></Col>
             </Row>
+
+            <Row className="mb-3">
+              <Col md={6}>
+             <Form.Control
+              name="maxDistance"
+              placeholder="Max Distance to University (in km)"
+              value={formData.maxDistance}
+              onChange={handleChange}
+             />
+             </Col>
+          </Row>
+
             <div className="mb-4">
               <strong>Select preferred amenities:</strong>
               <div className="d-flex flex-wrap gap-2 mt-2">
@@ -241,6 +350,7 @@ const StudentProfile = () => {
                         <Button type="submit" variant="success">Save Profile</Button>
       </div>
     </Form>
+
   </Container>
 </div> 
   );
