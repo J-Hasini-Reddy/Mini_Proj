@@ -16,8 +16,8 @@ function WelcomePage() {
   const navigate = useNavigate();
 
   return (
-    <div>
-      {/* Hero Section */}
+    <div className="welcome-page">
+      {/* Hero Section */} 
       <section
         id="home"
         className="vh-100 d-flex align-items-center"

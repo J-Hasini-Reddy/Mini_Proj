@@ -46,9 +46,20 @@ app.post('/api/recommend', async (req, res) => {
 });
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB connected"))
-  .catch((err) => console.log(err));
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => {
+  console.log("MongoDB connected successfully");
+  // Create indexes for StudentProfile
+  StudentProfile.createIndexes();
+  console.log("Created indexes for StudentProfile");
+})
+.catch((err) => {
+  console.error("MongoDB connection error:", err);
+  process.exit(1); // Exit process if connection fails
+});
 
 // Start server
 const PORT = process.env.PORT || 5000;

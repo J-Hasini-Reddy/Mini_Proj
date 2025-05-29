@@ -19,42 +19,44 @@ function SearchBar() {
   ];
 
   return (
-    <div className="search-bar-container">
-      <input
-        type="text"
-        className="search-input mb-3"
-        placeholder="Search by city, university or property"
-        onFocus={() => setShowSuggestions(true)}
-        onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
-      />
-      {showSuggestions && (
-        <div className="suggestions-container w-100 bg-white shadow rounded mt-2 p-3">
-          <div className="mb-4">
-            <h5 className="section-title mb-2">Top Cities</h5>
-            <div className="row">
-              {topCities.map((city, idx) => (
-                <div className="col-6" key={idx}>
-                  <div className="suggestion-item">
-                    {city}
+    <div className="search-bar-component">
+      <div className="search-bar-container">
+        <input
+          type="text"
+          className="form-control search-input mb-3"
+          placeholder="Search by city, university or property"
+          onFocus={() => setShowSuggestions(true)}
+          onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+        />
+        {showSuggestions && (
+          <div className="suggestions-container w-100 bg-white shadow rounded mt-2 p-3">
+            <div className="mb-4">
+              <h5 className="section-title mb-2">Top Cities</h5>
+              <div className="row">
+                {topCities.map((city, idx) => (
+                  <div className="col-6" key={idx}>
+                    <div className="suggestion-item">
+                      {city}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
+            </div>
+            <div>
+              <h5 className="section-title mb-2">Top Universities</h5>
+              <div className="row">
+                {topUniversities.map((university, idx) => (
+                  <div className="col-6" key={idx}>
+                    <div className="suggestion-item">
+                      {university}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-          <div>
-            <h5 className="section-title mb-2">Top Universities</h5>
-            <div className="row">
-              {topUniversities.map((university, idx) => (
-                <div className="col-6" key={idx}>
-                  <div className="suggestion-item">
-                    {university}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }

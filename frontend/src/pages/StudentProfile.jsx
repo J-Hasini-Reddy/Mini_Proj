@@ -9,11 +9,86 @@ const StudentProfile = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [formData, setFormData] = useState({
-    fullName: '', age: '', gender: '', course: '', university: '', email: '', bio: '',
-    personality: '', hobbies: [], entertainment: '', dreamLifestyle: '', roommateExpectations: '',
-    cleanliness: '', sleepSchedule: '', noise: '', food: '', substanceUse: '', guests: '',
-    roomType: '',sharingType: '', maxRent: '',maxDistance: '', amenities: []
+    fullName: null, 
+    age: null, 
+    gender: null, 
+    course: null, 
+    university: null, 
+    email: null, // Will be set from auth token
+    bio: null,
+    personality: null, 
+    hobbies: [], 
+    entertainment: null, 
+    dreamLifestyle: null, 
+    roommateExpectations: null,
+    cleanliness: null, 
+    sleepSchedule: null, 
+    noise: null, 
+    food: null, 
+    substanceUse: null, 
+    guests: null,
+    roomType: null,
+    sharingType: null, 
+    maxRent: null,
+    maxDistance: null, 
+    amenities: []
   });
+
+  // Initialize form data with null values
+  useEffect(() => {
+    const initializeFormData = () => {
+      // Get email from token
+      const token = localStorage.getItem("studentToken");
+      let email = '';
+      if (token) {
+        try {
+          const decoded = JSON.parse(atob(token.split('.')[1]));
+          email = decoded.email;
+        } catch (error) {
+          console.error('Error decoding token:', error);
+        }
+      }
+      
+      setFormData({
+        fullName: null, 
+        age: null, 
+        gender: null, 
+        course: null, 
+        university: null, 
+        email: email,
+        bio: null,
+        personality: null, 
+        hobbies: [], 
+        entertainment: null, 
+        dreamLifestyle: null, 
+        roommateExpectations: null,
+        cleanliness: null, 
+        sleepSchedule: null, 
+        noise: null, 
+        food: null, 
+        substanceUse: null, 
+        guests: null,
+        roomType: null,
+        sharingType: null, 
+        maxRent: null,
+        maxDistance: null, 
+        amenities: []
+      });
+    };
+    initializeFormData();
+  }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem("studentToken");
+    if (token) {
+      try {
+        const decoded = JSON.parse(atob(token.split('.')[1]));
+        setFormData(prev => ({ ...prev, email: decoded.email }));
+      } catch (error) {
+        console.error('Error decoding token:', error);
+      }
+    }
+  }, []);
 
   const hobbiesList = ['Music', 'Sports', 'Reading', 'Gaming', 'Traveling', 'Cooking'];
   const amenitiesList = ['WiFi', 'AC', 'Meals', 'Laundry', 'Attached Bathroom', 'Heater', 'Security', 'Parking', 'Elevator' ];
@@ -39,29 +114,34 @@ const StudentProfile = () => {
 
         // First fetch profile
         const profileResponse = await axios.get(
-          "http://localhost:5000/api/student/profile",
+          "http://localhost:5000/api/student/profile/",
           config
         );
 
+        // If profile exists, update form data
         if (profileResponse.data) {
           setFormData(prev => ({ ...prev, ...profileResponse.data }));
+        }
+        // If no profile exists, just continue with empty form
+        else {
+          console.log('No existing profile found - starting fresh');
+        }
 
-          // Then fetch recommendations
-          try {
-            const recommendResponse = await axios.post(
-              "http://localhost:5000/api/recommend",
-              profileResponse.data,
-              config
-            );
+        // Then fetch recommendations
+        try {
+          const recommendResponse = await axios.post(
+            "http://localhost:5000/api/recommend/",
+            profileResponse.data,
+            config
+          );
 
-            if (recommendResponse.data) {
-              console.log("Top 3 recommended listings:", recommendResponse.data);
-              setRecommendedListings(recommendResponse.data);
-            }
-          } catch (recommendError) {
-            console.error("Recommendation API error:", recommendError);
-            // Don't show error to user if profile was loaded successfully
+          if (recommendResponse.data) {
+            console.log("Top 3 recommended listings:", recommendResponse.data);
+            setRecommendedListings(recommendResponse.data);
           }
+        } catch (recommendError) {
+          console.error("Recommendation API error:", recommendError);
+          // Don't show error to user if profile was loaded successfully
         }
       } catch (error) {
         console.error("API Error:", error);
@@ -69,6 +149,9 @@ const StudentProfile = () => {
           // Clear token and redirect to login if unauthorized
           localStorage.removeItem("studentToken");
           window.location.href = '/student/login';
+        } else if (error.response?.status === 404) {
+          // If profile not found, just continue with empty form
+          console.log('No existing profile found - starting fresh');
         } else {
           // Handle other errors
           alert("Failed to load profile. Please try again.");
@@ -108,37 +191,90 @@ const StudentProfile = () => {
 
       // Add loading state
       setFormData(prev => ({ ...prev, isLoading: true }));
-      console.log('Form data being sent:', formData);
 
-      const response = await axios.post(
-        "http://localhost:5000/api/student/profile",
-        formData,
-        {
-          headers: { Authorization: `Bearer ${token}` }
-        }
+      // Validate required fields
+      const requiredFields = ['fullName', 'email', 'course', 'university'];
+      const missingFields = requiredFields.filter(field => !formData[field]);
+      
+      if (missingFields.length > 0) {
+        alert(`Please fill in the following required fields: ${missingFields.join(', ')}`);
+        setFormData(prev => ({ ...prev, isLoading: false }));
+        return;
+      }
+
+      // Format the data before sending
+      const formattedData = {
+        ...formData,
+        // Ensure email is lowercase
+        email: formData.email?.toLowerCase() || '',
+        // Format gender to match schema
+        gender: formData.gender ? formData.gender.charAt(0).toUpperCase() + formData.gender.slice(1).toLowerCase() : '',
+        // Convert age to number if it's a string
+        age: formData.age ? Number(formData.age) : null,
+        // Set default values for required fields
+        cleanliness: formData.cleanliness || 'Clean',
+        noise: formData.noise || 'Moderate',
+        food: formData.food || '',
+        substanceUse: formData.substanceUse || 'No',
+        guests: formData.guests || 'No'
+      };
+
+      // Remove null values but keep required fields
+      const cleanedData = Object.fromEntries(
+        Object.entries(formattedData).filter(([key, value]) => {
+          // Always keep required fields
+          const requiredFields = ['fullName', 'email', 'course', 'university', 'cleanliness', 'noise', 'substanceUse', 'guests'];
+          return value !== null || requiredFields.includes(key);
+        })
       );
 
-      // Remove loading state
-      setFormData(prev => ({ ...prev, isLoading: false }));
-      console.log('API Response:', response);
-      console.log('Response data:', response.data);
-      console.log('Response status:', response.status);
+      console.log('Form data being sent:', formattedData);
 
-      if (response.status === 200 && response.data && response.data.message === 'Profile saved') {
-        console.log('Success case triggered');
-        // Success message before redirect
-        alert("Profile saved successfully! Redirecting to recommendations...");
-        // Redirect to StudentHome with scroll behavior
-        navigate('/student/home', { 
-          replace: true,
-          state: { scrollToJustForYou: true }
-        });
-      } else if (response.data && response.data.message) {
-        console.error('Error case triggered:', response.data.message);
-        alert(`Failed to save profile: ${response.data.message}`);
-      } else {
-        console.error('Unknown error case');
-        alert("Failed to save profile. Please try again.");
+      try {
+        const response = await axios.post(
+          "http://localhost:5000/api/student/profile/",
+          formattedData,
+          {
+            headers: { Authorization: `Bearer ${token}` }
+          }
+        );
+
+        // Remove loading state
+        setFormData(prev => ({ ...prev, isLoading: false }));
+        console.log('API Response:', response);
+        console.log('Response data:', response.data);
+        console.log('Response status:', response.status);
+
+        if (response.status === 200 && response.data && response.data.message === 'Profile saved') {
+          console.log('Success case triggered');
+          // Success message before redirect
+          alert("Profile saved successfully! Redirecting to recommendations...");
+          // Redirect to StudentHome with scroll behavior
+          navigate('/student/home', { 
+            state: { 
+              scrollPosition: window.scrollY 
+            }
+          }, { replace: true });
+        } else {
+          console.error('Unexpected response:', response);
+          alert('Failed to save profile. Please try again.');
+        }
+      } catch (error) {
+        console.error('Error saving profile:', error);
+        console.error('Error details:', error.response?.data);
+        console.error('Response data:', error.response?.data);
+        
+        // Remove loading state
+        setFormData(prev => ({ ...prev, isLoading: false }));
+        
+        if (error.response) {
+          // Server responded with an error
+          alert(error.response.data?.message || 'Failed to save profile. Please try again.');
+        } else {
+          // Network error or other issue
+          alert('Failed to connect to server. Please check your internet connection and try again.');
+        }
+        return;
       }
     } catch (error) {
       console.error("Error saving profile:", error);
@@ -357,4 +493,3 @@ const StudentProfile = () => {
 };
 
 export default StudentProfile;
-

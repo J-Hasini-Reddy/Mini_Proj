@@ -13,7 +13,17 @@ const verifyToken = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded;
+    if (!decoded.id) {
+      return res.status(401).json({ message: 'Invalid token format' });
+    }
+    
+    // Ensure we have the user ID in the request
+    req.user = {
+      id: decoded.id,
+      username: decoded.username,
+      email: decoded.email
+    };
+    
     next();
   } catch (err) {
     console.error("JWT verification error:", err.message);

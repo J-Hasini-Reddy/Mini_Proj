@@ -194,7 +194,7 @@ const AddListing = () => {
 
       if (res.data.success) {
         showToast('success', 'Listing created successfully!');
-        navigate('/owner/listings');
+        //navigate('/owner/listings');
       } else {
         showToast('error', 'Failed to create listing');
       }

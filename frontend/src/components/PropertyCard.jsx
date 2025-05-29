@@ -38,7 +38,7 @@ const PropertyCard = ({ property }) => {
       <div className="position-relative">
         {property.images && property.images.length > 0 && (
           <img
-            src={property.images[0].url}
+            src={typeof property.images[0] === 'object' ? property.images[0].url : property.images[0]}
             className="card-img-top"
             alt={property.title}
             style={{ 

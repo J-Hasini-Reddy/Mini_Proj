@@ -18,6 +18,7 @@ import Dashboard from './pages/admin/Dashboard';
 import UsersPage from './pages/admin/Users';
 import StudentRecommendations from './pages/StudentRecommendations';
 import ProtectedRoute from "./components/ProtectedRoute";
+import ChatPage from "./components/chat/ChatPage";
 
 function App() {
   // ✅ Setup Axios Authorization header once on app load
@@ -61,6 +62,11 @@ function App() {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="users" element={<UsersPage />} />
         </Route>
+        <Route path="/chat" element={
+          <ProtectedRoute role="student">
+            <ChatPage />
+          </ProtectedRoute>
+        } />
       </Routes>
       <div id="toast-container" className="toast-container"></div>
     </Router>
