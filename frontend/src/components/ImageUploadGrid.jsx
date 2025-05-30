@@ -1,3 +1,6 @@
+/**
+ * @file ImageUploadGrid.jsx - Component for uploading and displaying property images
+ */
 import React, { useRef } from 'react';
 import { Spinner } from 'react-bootstrap';
 import axios from 'axios';

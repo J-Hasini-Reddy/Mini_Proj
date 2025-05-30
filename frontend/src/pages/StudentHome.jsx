@@ -1,3 +1,6 @@
+/**
+ * @file StudentHome.jsx - Main dashboard component for student users
+ */
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
@@ -131,7 +134,7 @@ const StudentHome = () => {
         <Navbar bg="light" expand="lg" className="shadow-none py-3">
           <Container>
             <Navbar.Brand href="/" className="d-flex align-items-center">
-              <img src={logo} alt="FindMyStay" height="40" />
+              <img src={logo} alt="FindMyStay" height="60" />
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">

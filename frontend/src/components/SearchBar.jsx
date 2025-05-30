@@ -1,4 +1,7 @@
 // SearchBar.jsx
+/**
+ * @file SearchBar.jsx - Component for property search functionality
+ */
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import './SearchBar.css';

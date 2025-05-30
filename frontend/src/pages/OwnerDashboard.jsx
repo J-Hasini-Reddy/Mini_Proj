@@ -1,8 +1,14 @@
+/**
+ * @file OwnerDashboard.jsx - Main dashboard component for property owners
+ */
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Navbar, Nav, Dropdown, Button, Row, Col, Card } from 'react-bootstrap';
 import { FaBell, FaUserCircle, FaClipboardList, FaChartBar, FaPlusCircle } from 'react-icons/fa';
 import './StudentHome.css'; // for shared styles
+import axios from 'axios';
+import ownerBack from './WelcomePage/owner_back.jpeg';
+import logo from './WelcomePage/logo_b.png';
 
 const mockListings = [
   {
@@ -35,7 +41,9 @@ const OwnerDashboard = () => {
       {/* ✅ Navbar */}
       <Navbar bg="light" expand="lg" className="shadow-sm py-3">
         <Container>
-          <Navbar.Brand href="/owner/home" className="fw-bold fs-4 text-primary">FindMyStay</Navbar.Brand>
+          <Navbar.Brand href="/" className="d-flex align-items-center">
+                      <img src={logo} alt="FindMyStay" height="60" />
+                    </Navbar.Brand>
           <Navbar.Toggle aria-controls="owner-navbar" />
           <Navbar.Collapse id="owner-navbar" className="justify-content-end">
             <Nav className="align-items-center gap-4">
@@ -67,7 +75,16 @@ const OwnerDashboard = () => {
 
       {/* ✅ Welcome Banner */}
       <Container className="mt-5">
-        <div className="mb-4">
+        <div className="welcome-banner mb-4" style={{
+          backgroundImage: `url(${ownerBack})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          padding: '2rem',
+          borderRadius: '10px',
+          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+          color: '#fff'
+        }}>
           <h3 className="fw-semibold">Welcome back, Owner!</h3>
           <p className="text-muted">Here’s what’s happening on your properties today.</p>
         </div>

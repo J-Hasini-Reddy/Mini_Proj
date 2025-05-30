@@ -51,7 +51,6 @@ router.post('/add-listing', authenticate, async (req, res) => {
         coordinates: [location[1], location[0]] // GeoJSON: [lng, lat]
       },
       distance,
-      travelTime,
       ownerId: req.ownerId
     });
 

@@ -1,3 +1,6 @@
+/**
+ * @file App.js - Main application component
+ */
 import './App.css';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import axios from "axios";

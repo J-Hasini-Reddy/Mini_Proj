@@ -1,3 +1,6 @@
+/**
+ * @file AmenitiesSelector.jsx - Component for selecting property amenities
+ */
 import React from 'react';
 import {
   FaWifi,

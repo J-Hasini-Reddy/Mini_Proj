@@ -1,3 +1,6 @@
+/**
+ * @file RoommateCard.jsx - Component for displaying roommate profiles
+ */
 import React from 'react';
 import { Card, Badge, Button } from 'react-bootstrap';
 import { FaMars, FaVenus, FaGenderless } from 'react-icons/fa';

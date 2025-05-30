@@ -1,3 +1,6 @@
+/**
+ * @file OwnerLogin.jsx - Component for owner login page
+ */
 import React, { useState } from "react";
 import "./Owner.css";
 import "../../styles/iconStyles.css";

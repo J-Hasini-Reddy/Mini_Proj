@@ -40,11 +40,6 @@ const listingSchema = new mongoose.Schema({
   },
 
   distance: { type: String }, // optional override (e.g. "1.5 km")
-  travelTime: {
-    car: { type: String },
-    bus: { type: String },
-    walk: { type: String }
-  },
 
   createdAt: {
     type: Date,

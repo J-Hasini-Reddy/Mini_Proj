@@ -1,3 +1,6 @@
+/**
+ * @file auth.js - Middleware for authentication and authorization
+ */
 const jwt = require("jsonwebtoken");
 
 const verifyToken = (req, res, next) => {

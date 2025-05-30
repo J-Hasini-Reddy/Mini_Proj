@@ -1,4 +1,7 @@
 require('dotenv').config();
+/**
+ * @file studentAuth.js - Routes for student authentication
+ */
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');

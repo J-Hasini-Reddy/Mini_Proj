@@ -28,18 +28,25 @@ export const validateListing = (formData) => {
   if (formData.distance && isNaN(formData.distance)) 
     errors.distance = 'Distance must be a number';
 
-  // Travel Time Validation
-  const timePatterns = {
-    car: formData.travelTime.car,
-    bus: formData.travelTime.bus,
-    walk: formData.travelTime.walk
-  };
+  // University Validation
+  const VALID_UNIVERSITIES = [
+    'Bhoj Reddy Engineering College For Women',
+    'JNTU Hyderabad',
+    'Osmania University',
+    'Vignan University',
+    'VNR Vignana Jyothi Institute of Engineering & Technology',
+    'K L University',
+    'Sreenidhi Institute of Science and Technology'
+  ];
 
-  Object.entries(timePatterns).forEach(([mode, time]) => {
-    if (time && !/^\d+\s*(min|minutes|mins|hr|hours)?$/.test(time)) {
-      errors[mode] = `Invalid ${mode} travel time format (e.g., "5 min", "10 minutes")`;
-    }
-  });
+  if (!formData.university || !VALID_UNIVERSITIES.includes(formData.university)) {
+    errors.university = 'Please select a valid university';
+  }
+
+  // Amenities Validation
+  if (!formData.amenities || formData.amenities.length === 0) {
+    errors.amenities = 'Please select at least one amenity';
+  }
 
   return errors;
 };

@@ -1,3 +1,6 @@
+/**
+ * @file StudentLogin.jsx - Component for student login page
+ */
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";

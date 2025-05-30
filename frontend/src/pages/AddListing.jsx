@@ -11,6 +11,7 @@ import { showToast } from '../utils/toastUtils';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
+import logo from './WelcomePage/logo_b.png';
 
 // Constants for validation
 const MAX_IMAGES = 10;
@@ -52,11 +53,6 @@ const AddListing = () => {
     amenities: [],
     images: [],
     distance: '',
-    travelTime: {
-      car: '',
-      bus: '',
-      walk: ''
-    }
   });
 
   const [location, setLocation] = useState(null); // [lat, lng]
@@ -99,16 +95,6 @@ const AddListing = () => {
       return;
     }
     setFormData(prev => ({ ...prev, university: value }));
-  };
-
-  const handleTravelTimeChange = (mode, value) => {
-    setFormData(prev => ({
-      ...prev,
-      travelTime: {
-        ...prev.travelTime,
-        [mode]: value
-      }
-    }));
   };
 
   const handleAmenityToggle = (amenity) => {
@@ -167,11 +153,6 @@ const AddListing = () => {
       })),
       location: location,
       distance: parseFloat(formData.distance),
-      travelTime: {
-        car: formData.travelTime.car || '',
-        bus: formData.travelTime.bus || '',
-        walk: formData.travelTime.walk || ''
-      }
     };
 
     try {
@@ -223,7 +204,11 @@ const AddListing = () => {
     <div className="listing-container">
       <Navbar bg="light" expand="lg" className="shadow-sm py-3">
         <Container fluid>
-          <Navbar.Brand href="/owner/home" className="fw-bold fs-4 text-primary">FindMyStay</Navbar.Brand>
+          <Navbar.Brand href="/owner/home" className="d-flex align-items-center">
+            <div className="d-flex align-items-center" style={{ paddingLeft: '80px' }}>
+              <img src={logo} alt="FindMyStay" height="60" />
+            </div>
+          </Navbar.Brand>
           <Navbar.Toggle aria-controls="owner-navbar" />
           <Navbar.Collapse id="owner-navbar" className="justify-content-end">
             <Nav className="align-items-center gap-4">
@@ -416,7 +401,7 @@ const AddListing = () => {
 
           {/* 📍 Travel Distance & Time */}
           <div className="p-4 mb-4 rounded border bg-light-subtle">
-            <h5>📍 Travel Time (optional override)</h5>
+            <h5>📍 Distance from university (optional override)</h5>
             <Row className="mb-3">
               <Col md={6}>
                 <Form.Control 
@@ -432,45 +417,6 @@ const AddListing = () => {
                 </Form.Control.Feedback>
               </Col>
             </Row>
-            <Row className="mb-3">
-              <Col md={4}>
-                <Form.Control 
-                  placeholder="By Car (e.g. 5 min)" 
-                  value={formData.travelTime.car} 
-                  onChange={(e) => handleTravelTimeChange('car', e.target.value)}
-                  isValid={errors.car === undefined}
-                  isInvalid={!!errors.car}
-                />
-                <Form.Control.Feedback type="invalid">
-                  {errors.car}
-                </Form.Control.Feedback>
-              </Col>
-              <Col md={4}>
-                <Form.Control 
-                  placeholder="By Bus" 
-                  value={formData.travelTime.bus} 
-                  onChange={(e) => handleTravelTimeChange('bus', e.target.value)}
-                  isValid={errors.bus === undefined}
-                  isInvalid={!!errors.bus}
-                />
-                <Form.Control.Feedback type="invalid">
-                  {errors.bus}
-                </Form.Control.Feedback>
-              </Col>
-              <Col md={4}>
-                <Form.Control 
-                  placeholder="By Walk" 
-                  value={formData.travelTime.walk} 
-                  onChange={(e) => handleTravelTimeChange('walk', e.target.value)}
-                  isValid={errors.walk === undefined}
-                  isInvalid={!!errors.walk}
-                />
-                <Form.Control.Feedback type="invalid">
-                  {errors.walk}
-                </Form.Control.Feedback>
-              </Col>
-            </Row>
-            <small className="text-muted">⚠️ Later we'll auto-fill this using location + university via OpenRouteService API.</small>
           </div>
 
           {/* ✅ Submit */}

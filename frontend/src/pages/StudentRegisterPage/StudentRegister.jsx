@@ -1,3 +1,6 @@
+/**
+ * @file StudentRegister.jsx - Component for student registration form
+ */
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";

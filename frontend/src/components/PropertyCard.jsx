@@ -1,3 +1,6 @@
+/**
+ * @file PropertyCard.jsx - Component for displaying property listings
+ */
 import React from 'react';
 import { Card, Badge, Button } from 'react-bootstrap';
 import { 
@@ -66,21 +69,6 @@ const PropertyCard = ({ property }) => {
           <span className="mx-2">•</span>
           <span>{property.distance} km away</span>
         </div>
-
-        {/* Travel Times */}
-        {property.travelTimes && (
-          <div className="d-flex gap-2 mb-3">
-            <Badge bg="light" text="dark">
-              <FaCar className="me-1" />{property.travelTimes.car}
-            </Badge>
-            <Badge bg="light" text="dark">
-              <FaBus className="me-1" />{property.travelTimes.bus}
-            </Badge>
-            <Badge bg="light" text="dark">
-              <FaWalking className="me-1" />{property.travelTimes.walk}
-            </Badge>
-          </div>
-        )}
 
         {/* Room Type and Sharing */}
         <div className="d-flex gap-2 mb-3">

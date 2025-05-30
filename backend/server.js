@@ -4,6 +4,9 @@ const cors = require('cors');
 const axios = require('axios');
 require('dotenv').config();
 
+// Import models
+const StudentProfile = require('./models/StudentProfile');
+
 const app = express();
 
 // ✅ Apply CORS and JSON parser BEFORE routes
@@ -29,7 +32,8 @@ app.use('/api/student/profile', studentProfileRoutes);
 const recommendRoute = require('./routes/recommend');
 app.use('/api/recommend', recommendRoute);
 
-
+const listingsRoute = require('./routes/listings');
+app.use('/api/listings', listingsRoute);
 
 // Test route
 app.get('/', (req, res) => res.send("API is running"));

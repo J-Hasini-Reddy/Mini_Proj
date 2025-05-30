@@ -1,8 +1,29 @@
+/**
+ * @file StudentRecommendations.jsx - Component for displaying roommate recommendations
+ */
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Card, Button, Spinner } from 'react-bootstrap';
+import { Container, Row, Col, Card, Button, Spinner, Link } from 'react-bootstrap';
 import { FaStar, FaMapMarkerAlt, FaRupeeSign, FaCheckCircle } from 'react-icons/fa';
 import axios from 'axios';
 import './StudentHome.css';
+import { Link as RouterLink } from 'react-router-dom';
+
+// Using inline styles for images
+const images = {
+  P1: require('./WelcomePage/P1.jpg'),
+  P2: require('./WelcomePage/P2.jpg'),
+  P3: require('./WelcomePage/P3.jpg'),
+  P4: require('./WelcomePage/P4.jpg'),
+  P5: require('./WelcomePage/P5.jpg')
+};
+
+// Add this style to StudentHome.css
+const imageStyles = {
+  width: '100%',
+  height: '200px',
+  objectFit: 'cover',
+  borderRadius: '8px 8px 0 0'
+};
 
 const StudentRecommendations = () => {
   const [topRecommendations, setTopRecommendations] = useState([]);
@@ -72,6 +93,19 @@ const StudentRecommendations = () => {
                 {topRecommendations.map((listing, index) => (
                   <Col key={listing._id}>
                     <Card className="h-100">
+                      <div style={{
+                        ...imageStyles,
+                        backgroundImage: `url(${listing.images[0] || (
+                          index === 0 ? images.P1 :
+                          index === 1 ? images.P2 :
+                          index === 2 ? images.P3 :
+                          index === 3 ? images.P4 :
+                          images.P5
+                        )})`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center'
+                      }}
+                      />
                       <Card.Body>
                         <Card.Title className="d-flex justify-content-between align-items-center mb-3">
                           <h5 className="mb-0">{listing.title}</h5>
@@ -110,9 +144,16 @@ const StudentRecommendations = () => {
               <div>
                 <h3 className="mb-4">More Properties You Might Like</h3>
                 <Row xs={1} md={2} lg={3} className="g-4">
-                  {similarProperties.map((listing) => (
+                  {similarProperties.map((listing, index) => (
                     <Col key={listing._id}>
                       <Card className="h-100">
+                        <div style={{
+                          ...imageStyles,
+                          backgroundImage: `url(${index % 2 === 0 ? images.P4 : images.P5})`,
+                          backgroundSize: 'cover',
+                          backgroundPosition: 'center'
+                        }}
+                        />
                         <Card.Body>
                           <Card.Title>{listing.title}</Card.Title>
                           <div className="listing-details">
@@ -133,9 +174,24 @@ const StudentRecommendations = () => {
                               <span>{formatAmenities(listing.amenities)}</span>
                             </div>
                           </div>
-                          <Button variant="primary" className="w-100">
-                            View Details
-                          </Button>
+                          <Card.Text>
+                            <h5>Amenities</h5>
+                            <ul>
+                              {listing.amenities.map((amenity, index) => (
+                                <li key={index}>
+                                  <FaCheckCircle className="text-success" /> {amenity}
+                                </li>
+                              ))}
+                            </ul>
+                          </Card.Text>
+                          <Card.Footer className="text-center">
+                            <Button variant="primary" 
+                                    as={RouterLink} 
+                                    to={`/view-details/${listing._id}`}
+                                    className="w-100">
+                              View Details
+                            </Button>
+                          </Card.Footer>
                         </Card.Body>
                       </Card>
                     </Col>

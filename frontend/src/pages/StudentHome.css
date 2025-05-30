@@ -81,12 +81,23 @@
   line-height: 1.6;
 }
 
+
 .search-wrapper {
   max-width: 600px;
   margin-left: 0;
   margin-right: 0;
   position: absolute;
   left: 0;
+}
+
+.welcome-banner {
+  h3 {
+    color: white !important;
+  }
+  
+  p {
+    color: white !important;
+  }
 }
 
 .navbar {

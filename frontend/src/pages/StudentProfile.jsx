@@ -1,9 +1,32 @@
+/**
+ * @file StudentProfile.jsx - Component for managing student profile information
+ */
 import React, { useState, useEffect } from 'react';
 import { Container, Form, Button, Row, Col, Badge, Navbar, Nav, InputGroup } from 'react-bootstrap';
 import { FaBell, FaUserCircle, FaHeart, FaComments } from 'react-icons/fa';
 import './StudentHome.css';
 import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom';
+import logo from './WelcomePage/logo_b.png';
+import girlImage from './WelcomePage/girl_01.png';
+
+// Add avatar styles
+const avatarStyles = {
+  avatarContainer: {
+    width: '80px',
+    height: '80px',
+    borderRadius: '50%',
+    overflow: 'hidden',
+    border: '2px solid #fff',
+    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+    padding: '8px'
+  },
+  avatarImage: {
+    width: '100%',
+    height: '100%',
+    objectFit: 'contain'
+  }
+};
 
 const StudentProfile = () => {
   const navigate = useNavigate();
@@ -191,90 +214,37 @@ const StudentProfile = () => {
 
       // Add loading state
       setFormData(prev => ({ ...prev, isLoading: true }));
+      console.log('Form data being sent:', formData);
 
-      // Validate required fields
-      const requiredFields = ['fullName', 'email', 'course', 'university'];
-      const missingFields = requiredFields.filter(field => !formData[field]);
-      
-      if (missingFields.length > 0) {
-        alert(`Please fill in the following required fields: ${missingFields.join(', ')}`);
-        setFormData(prev => ({ ...prev, isLoading: false }));
-        return;
-      }
-
-      // Format the data before sending
-      const formattedData = {
-        ...formData,
-        // Ensure email is lowercase
-        email: formData.email?.toLowerCase() || '',
-        // Format gender to match schema
-        gender: formData.gender ? formData.gender.charAt(0).toUpperCase() + formData.gender.slice(1).toLowerCase() : '',
-        // Convert age to number if it's a string
-        age: formData.age ? Number(formData.age) : null,
-        // Set default values for required fields
-        cleanliness: formData.cleanliness || 'Clean',
-        noise: formData.noise || 'Moderate',
-        food: formData.food || '',
-        substanceUse: formData.substanceUse || 'No',
-        guests: formData.guests || 'No'
-      };
-
-      // Remove null values but keep required fields
-      const cleanedData = Object.fromEntries(
-        Object.entries(formattedData).filter(([key, value]) => {
-          // Always keep required fields
-          const requiredFields = ['fullName', 'email', 'course', 'university', 'cleanliness', 'noise', 'substanceUse', 'guests'];
-          return value !== null || requiredFields.includes(key);
-        })
+      const response = await axios.post(
+        "http://localhost:5000/api/student/profile",
+        formData,
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
       );
 
-      console.log('Form data being sent:', formattedData);
+      // Remove loading state
+      setFormData(prev => ({ ...prev, isLoading: false }));
+      console.log('API Response:', response);
+      console.log('Response data:', response.data);
+      console.log('Response status:', response.status);
 
-      try {
-        const response = await axios.post(
-          "http://localhost:5000/api/student/profile/",
-          formattedData,
-          {
-            headers: { Authorization: `Bearer ${token}` }
-          }
-        );
-
-        // Remove loading state
-        setFormData(prev => ({ ...prev, isLoading: false }));
-        console.log('API Response:', response);
-        console.log('Response data:', response.data);
-        console.log('Response status:', response.status);
-
-        if (response.status === 200 && response.data && response.data.message === 'Profile saved') {
-          console.log('Success case triggered');
-          // Success message before redirect
-          alert("Profile saved successfully! Redirecting to recommendations...");
-          // Redirect to StudentHome with scroll behavior
-          navigate('/student/home', { 
-            state: { 
-              scrollPosition: window.scrollY 
-            }
-          }, { replace: true });
-        } else {
-          console.error('Unexpected response:', response);
-          alert('Failed to save profile. Please try again.');
-        }
-      } catch (error) {
-        console.error('Error saving profile:', error);
-        console.error('Error details:', error.response?.data);
-        console.error('Response data:', error.response?.data);
-        
-        // Remove loading state
-        setFormData(prev => ({ ...prev, isLoading: false }));
-        
-        if (error.response) {
-          // Server responded with an error
-          alert(error.response.data?.message || 'Failed to save profile. Please try again.');
-        } else {
-          // Network error or other issue
-          alert('Failed to connect to server. Please check your internet connection and try again.');
-        }
-        return;
+      if (response.status === 200 && response.data && response.data.message === 'Profile saved') {
+        console.log('Success case triggered');
+        // Success message before redirect
+        alert("Profile saved successfully! Redirecting to recommendations...");
+        // Redirect to StudentHome with scroll behavior
+        navigate('/student/home', { 
+          replace: true,
+          state: { scrollToJustForYou: true }
+        });
+      } else if (response.data && response.data.message) {
+        console.error('Error case triggered:', response.data.message);
+        alert(`Failed to save profile: ${response.data.message}`);
+      } else {
+        console.error('Unknown error case');
+        alert("Failed to save profile. Please try again.");
       }
     } catch (error) {
       console.error("Error saving profile:", error);
@@ -299,17 +269,17 @@ const StudentProfile = () => {
     }
   };
 
-
   return (
-    <div className="student-profile">
-      {/* Navbar */}
+    <Container fluid className="student-profile-container">
       <Navbar bg="light" expand="lg" className="shadow-sm py-3">
         <Container>
-          <Navbar.Brand href="/" className="fw-bold fs-4 text-primary">FindMyStay</Navbar.Brand>
+          <Navbar.Brand href="/" className="d-flex align-items-center">
+            <img src={logo} alt="FindMyStay" height="60" />
+          </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
             <Nav className="align-items-center gap-4">
-              <Nav.Link href="/connect"><FaComments /> Connect</Nav.Link>
+              <Nav.Link href="/home"><FaComments /> Chat</Nav.Link>
               <Nav.Link href="/favorites"><FaHeart /> Favorites</Nav.Link>
               <Nav.Link href="/profile"><FaUserCircle /> Profile</Nav.Link>
               <Nav.Link href="/notifications"><FaBell size={20} /></Nav.Link>
@@ -318,16 +288,15 @@ const StudentProfile = () => {
         </Container>
       </Navbar>
 
-      <Container className="py-5">
-        <h2 className="mb-4">🧑 Student Profile</h2>
-
-        {/* Avatar */}
-        <div className="mb-4 d-flex align-items-center gap-3">
-          <div className="avatar bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center fs-2" style={{ width: 80, height: 80 }}>
-            {formData.fullName ? formData.fullName.split(' ').map(w => w[0]).join('') : '👤'}
+      {/* Profile Header with Avatar */}
+      <div className="profile-header mb-4">
+        <div className="d-flex align-items-center gap-3 mb-3">
+          <div style={avatarStyles.avatarContainer}>
+            <img src={girlImage} alt="Profile" style={avatarStyles.avatarImage} />
           </div>
-          <div className="text-muted">This avatar will be shown in Roommate Picks.</div>
+          <h2>Student Profile</h2>
         </div>
+      </div>
 
         <Form onSubmit={handleSubmit}>
           {/* Section 1: Basic Info */}
@@ -483,12 +452,10 @@ const StudentProfile = () => {
           </div>
 
           <div className="d-grid">
-                        <Button type="submit" variant="success">Save Profile</Button>
-      </div>
-    </Form>
-
-  </Container>
-</div> 
+            <Button type="submit" variant="success">Save Profile</Button>
+          </div>
+        </Form>
+      </Container>
   );
 };
 

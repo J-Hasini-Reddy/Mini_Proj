@@ -1,4 +1,6 @@
-
+/**
+ * @file ProtectedRoute.jsx - Component for route protection
+ */
 import { Navigate } from "react-router-dom";
 
 const ProtectedRoute = ({ children, role }) => {
