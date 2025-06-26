@@ -41,13 +41,21 @@ router.post('/', async (req, res) => {
         $project: {
           _id: 1,
           title: 1,
-          description: 1,
+          address: 1,
+          city: 1,
+          pincode: 1,
+          university: 1,
           rent: 1,
-          amenities: 1,
           roomType: 1,
           sharingType: 1,
-          university: 1,
-          distance: { $divide: ["$dist.calculated", KM_TO_METERS] } // Convert meters to km
+          amenities: 1,
+          location: 1,
+          images: 1,
+          location: 1,
+          distance: { $divide: ["$dist.calculated", KM_TO_METERS] },
+          ownerName: "$owner.name",
+          ownerEmail: "$owner.email",
+          ownerPhone: "$owner.phone"
         }
       }
     ]);

@@ -8,7 +8,7 @@ import { FaBell, FaUserCircle, FaClipboardList, FaChartBar, FaPlusCircle } from 
 import './StudentHome.css'; // for shared styles
 import axios from 'axios';
 import ownerBack from './WelcomePage/owner_back.jpeg';
-import logo from './WelcomePage/logo_b.png';
+import logo from './WelcomePage/logo2.png';
 
 const mockListings = [
   {
@@ -41,7 +41,7 @@ const OwnerDashboard = () => {
       {/* ✅ Navbar */}
       <Navbar bg="light" expand="lg" className="shadow-sm py-3">
         <Container>
-          <Navbar.Brand href="/" className="d-flex align-items-center">
+          <Navbar.Brand href="/owner/home" className="d-flex align-items-center">
                       <img src={logo} alt="FindMyStay" height="60" />
                     </Navbar.Brand>
           <Navbar.Toggle aria-controls="owner-navbar" />

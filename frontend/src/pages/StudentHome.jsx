@@ -9,7 +9,7 @@ import { FaBell, FaUserCircle, FaHeart, FaComments, FaSearch, FaStar, FaBus, FaC
 import './StudentHome.css';
 import '../styles/NavbarStyles.css';
 import homeBackImage from './WelcomePage/home_back.jpg';
-import logo from './WelcomePage/logo_b.png';
+import logo from './WelcomePage/logo2.png';
 import PropertyCard from '../components/PropertyCard';
 import RoommateCard from '../components/RoommateCard';
 

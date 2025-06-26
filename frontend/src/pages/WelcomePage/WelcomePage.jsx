@@ -13,7 +13,7 @@ import rentImage from './rent.png';
 import saraImage from './sara.jpg';
 import micImage from './mic.jpg';
 import emmaImage from './emma.png';
-import logo from './logo.png';
+import logo from './logo3.png';
 
 function WelcomePage() {
   const navigate = useNavigate();

@@ -124,15 +124,26 @@ const StudentRecommendations = () => {
                             <FaStar className="me-2" />
                             <span>{formatDistance(listing.distance)}</span>
                           </div>
-                          <div className="d-flex align-items-center">
-                            <FaCheckCircle className="me-2" />
-                            <span>{formatAmenities(listing.amenities)}</span>
-                          </div>
                         </div>
-                        <Button variant="success" className="w-100">
+                        <div className="amenities-section mb-3">
+                          <h5>Amenities</h5>
+                          <ul>
+                            {listing.amenities.map((amenity, index) => (
+                              <li key={index}>
+                                <FaCheckCircle className="text-success" /> {amenity}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </Card.Body>
+                      <Card.Footer className="text-center">
+                        <Button variant="primary" 
+                                as={RouterLink} 
+                                to={`/view-details/${listing._id}`}
+                                className="w-100">
                           View Details
                         </Button>
-                      </Card.Body>
+                      </Card.Footer>
                     </Card>
                   </Col>
                 ))}
@@ -169,21 +180,7 @@ const StudentRecommendations = () => {
                               <FaStar className="me-2" />
                               <span>{formatDistance(listing.distance)}</span>
                             </div>
-                            <div className="d-flex align-items-center">
-                              <FaCheckCircle className="me-2" />
-                              <span>{formatAmenities(listing.amenities)}</span>
-                            </div>
                           </div>
-                          <Card.Text>
-                            <h5>Amenities</h5>
-                            <ul>
-                              {listing.amenities.map((amenity, index) => (
-                                <li key={index}>
-                                  <FaCheckCircle className="text-success" /> {amenity}
-                                </li>
-                              ))}
-                            </ul>
-                          </Card.Text>
                           <Card.Footer className="text-center">
                             <Button variant="primary" 
                                     as={RouterLink} 
